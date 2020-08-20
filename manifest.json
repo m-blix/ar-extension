@@ -1,0 +1,6 @@
+{
+  "name": "AR Extension",
+  "version": "0.1",
+  "description": "Find 3D models on page to show in AR",
+  "manifest_version": 2
+}
