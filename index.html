@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AR Extension - Test Page</title>
+<style>
+html, body {
+  font-family: sans-serif;
+}
+
+
+</style>
+</head>
+<body>
+
+<h1>AR Extension - Test Page</h1>
+
+<p>Page includes an embedded 3DModel Schema</p>
+
+<p>Should trigger extension to show AR button to view model</p>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org/",
+  "@type" : "3DModel",
+  "image" : "//images.samsung.com/us/smartphones/galaxy-note20/v1/images/galaxy-note20-thumbnail-image.jpg",
+  "name" : "Samsung Galaxy Note20 Ultra 5G",
+  "encoding" : [
+    {
+      "@type" : "MediaObject",
+      "contentUrl" : "https://images.samsung.com/common/smartphones/models/galaxy-note20-ultra/galaxy-note20-ultra-mystic-bronze.glb",
+      "encodingFormat" : "model/gltf-binary"
+    },
+    {
+      "@type" : "MediaObject",
+      "contentUrl" : "https://images.samsung.com/common/smartphones/models/galaxy-note20-ultra/galaxy-note20-ultra-mystic-bronze.usdz",
+      "encodingFormat" : "model/vnd.usdz+zip"
+    }
+  ]
+}
+</script>
+
+</body>
+</html>
