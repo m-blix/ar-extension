@@ -9,7 +9,7 @@ console.log(`AR Extension: v${version} ('${pageTitle}')`);
 
 let modelUrl = get3DModelFromPage();
 if (modelUrl) {
-  console.log(`model found: ${modelUrl}`);
+  console.log(`3D model found: ${modelUrl}`);
 }
 
 /*
@@ -20,18 +20,13 @@ Extract 3D Model From html string
 {
   "@context" : "http://schema.org/",
   "@type" : "3DModel",
-  "image" : "//images.samsung.com/us/smartphones/galaxy-note20/v1/images/galaxy-note20-thumbnail-image.jpg",
+  "image" : "https://images.samsung.com/us/smartphones/galaxy-note20/v1/images/galaxy-note20-thumbnail-image.jpg",
   "name" : "Samsung Galaxy Note20 Ultra 5G",
   "encoding" : [
     {
       "@type" : "MediaObject",
       "contentUrl" : "https://images.samsung.com/common/smartphones/models/galaxy-note20-ultra/galaxy-note20-ultra-mystic-bronze.glb",
       "encodingFormat" : "model/gltf-binary"
-    },
-    {
-      "@type" : "MediaObject",
-      "contentUrl" : "https://images.samsung.com/common/smartphones/models/galaxy-note20-ultra/galaxy-note20-ultra-mystic-bronze.usdz",
-      "encodingFormat" : "model/vnd.usdz+zip"
     }
   ]
 }
@@ -94,6 +89,10 @@ function get3DModelFromPage() {
       console.log(json);
       break;
     }
+  }
+
+  if (!json) {
+    return;
   }
 
   let modelUrl = getModelUrlFromSchema(json);
