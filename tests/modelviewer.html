@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AR Extension - model-viewer Test Page</title>
+<style>
+html, body {
+  font-family: sans-serif;
+}
+
+model-viewer {
+  border: 1px solid #999;
+  width: 500px;
+  height: 500px;
+}
+</style>
+</head>
+<body>
+
+<h1>AR Extension - model-viewer Test Page</h1>
+
+<p>Page includes an embedded model-viewer tag</p>
+
+<p>Should trigger extension to show AR button to view model</p>
+
+
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"> </script>
+
+<model-viewer src="https://images.samsung.com/common/smartphones/models/galaxy-note20-ultra/galaxy-note20-ultra-mystic-bronze.glb" ar camera-controls></model-viewer>
+
+</body>
+</html>

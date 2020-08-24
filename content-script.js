@@ -12,6 +12,11 @@ if (modelUrl) {
   console.log(`3D model found: ${modelUrl}`);
 }
 
+let modelViewerModelUrl = getModelFromModelViewer();
+if (modelViewerModelUrl) {
+  console.log(`3D model found: ${modelViewerModelUrl}`);
+}
+
 /*
 Extract 3D Model From html string
 
@@ -115,4 +120,17 @@ function getModelUrlFromSchema(schema) {
   }
 
   return modelUrl;
+}
+
+function getModelFromModelViewer() {
+  let modelViewerTags = document.getElementsByTagName('model-viewer');
+
+  if (modelViewerTags.length === 0) {
+    return;
+  }
+
+  let mv = modelViewerTags[0];
+  let src = mv.getAttribute('src');
+
+  return src;
 }
