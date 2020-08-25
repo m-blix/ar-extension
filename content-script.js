@@ -2,20 +2,41 @@
 'use strict';
 
 const version = 0.1;
-
 let pageTitle = document.title;
-
 console.log(`AR Extension: v${version} ('${pageTitle}')`);
 
-let modelUrl = get3DModelFromPage();
-if (modelUrl) {
-  console.log(`3D model found: ${modelUrl}`);
+const CORRECT_LEVEL = QRCode.CorrectLevel.L;
+let qrCode;
+
+let uiEl = document.createElement('div');
+uiEl.id = 'arext-ui';
+let qrEl = document.createElement('div');
+qrEl.id = 'arext-qrc';
+uiEl.appendChild(qrEl);
+
+function load() {
+  let modelUrl = get3DModelFromPage();
+  if (modelUrl) {
+    console.log(`3D model found (schema): ${modelUrl}`);
+  } else {
+    modelUrl = getModelFromModelViewer();
+    if (modelUrl) {
+      console.log(`3D model found (model-viewer): ${modelUrl}`);
+    }
+  }
+
+  if (modelUrl) {
+    console.log('generating QR Code, adding to page');
+    generateQRCode(modelUrl);
+    console.log(qrEl);
+    document.body.appendChild(uiEl);
+
+  } else {
+    console.log('no 3D model found');
+  }
 }
 
-let modelViewerModelUrl = getModelFromModelViewer();
-if (modelViewerModelUrl) {
-  console.log(`3D model found: ${modelViewerModelUrl}`);
-}
+load();
 
 /*
 Extract 3D Model From html string
@@ -122,6 +143,11 @@ function getModelUrlFromSchema(schema) {
   return modelUrl;
 }
 
+/*
+Example:
+<model-viewer src="model.glb" ar camera-controls alt="model"></model-viewer>
+*/
+
 function getModelFromModelViewer() {
   let modelViewerTags = document.getElementsByTagName('model-viewer');
 
@@ -133,4 +159,23 @@ function getModelFromModelViewer() {
   let src = mv.getAttribute('src');
 
   return src;
+}
+
+
+function generateQRCode(url, size = 128) {
+  if (qrCode) {
+    qrCode.clear();
+  }
+  qrEl.innerHTML = '';
+
+  qrCode = new QRCode(qrEl, {
+    text: url,
+    width: size,
+    height: size,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : CORRECT_LEVEL
+  });
+
+  return qrCode;
 }
