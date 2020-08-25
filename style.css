@@ -1,8 +1,23 @@
 #arext-ui {
+  box-sizing: border-box;
   position: absolute;
-  top: 5px
+  font-family: sans-serif;
   right: 5px;
+  top: 5px;
+  padding: 5px;
+  border: 1px solid #999;
+  width: 140px;
+  background-color: #fff;
+  z-index: 1000;
 }
+
+#arext-msg {
+  font-size: 14px;
+  margin: 0;
+  margin-top: 4px;
+  font-weight: normal;
+}
+
 #arext-qrc {
 
 }

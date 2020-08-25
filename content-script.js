@@ -8,13 +8,24 @@ console.log(`AR Extension: v${version} ('${pageTitle}')`);
 const CORRECT_LEVEL = QRCode.CorrectLevel.L;
 let qrCode;
 
-let uiEl = document.createElement('div');
-uiEl.id = 'arext-ui';
-let qrEl = document.createElement('div');
-qrEl.id = 'arext-qrc';
-uiEl.appendChild(qrEl);
+let uiEl, qrEl, msgEl;
+
+
+function setupUI() {
+  uiEl = document.createElement('div');
+  uiEl.id = 'arext-ui';
+  qrEl = document.createElement('div');
+  qrEl.id = 'arext-qrc';
+  uiEl.appendChild(qrEl);
+  msgEl = document.createElement('h1');
+  msgEl.id = 'arext-msg';
+  msgEl.textContent = 'Scan to View Model';
+  uiEl.appendChild(msgEl);
+}
 
 function load() {
+  setupUI();
+
   let modelUrl = get3DModelFromPage();
   if (modelUrl) {
     console.log(`3D model found (schema): ${modelUrl}`);
