@@ -1,9 +1,11 @@
 /* content script */
 'use strict';
 
-const version = 0.1;
+const VERSION = 0.1;
 let pageTitle = document.title;
-console.log(`AR Extension: v${version} ('${pageTitle}')`);
+console.log(`AR Extension: v${VERSION} ('${pageTitle}')`);
+
+const VIEW_BASE_URL = 'https://m-blix.github.io/share-poc/?url=';
 
 const CORRECT_LEVEL = QRCode.CorrectLevel.L;
 let qrCode;
@@ -21,6 +23,10 @@ function setupUI() {
   msgEl.id = 'arext-msg';
   msgEl.textContent = 'Scan to View Model';
   uiEl.appendChild(msgEl);
+
+  qrEl.addEventListener('dblclick', function(ev){
+    window.open(qrEl.dataset.url, '_blank');
+  });
 }
 
 function load() {
@@ -38,10 +44,13 @@ function load() {
 
   if (modelUrl) {
     console.log('generating QR Code, adding to page');
-    generateQRCode(modelUrl);
-    console.log(qrEl);
-    document.body.appendChild(uiEl);
 
+    let url = VIEW_BASE_URL+modelUrl;
+
+    generateQRCode(url);
+    qrEl.dataset.url = url;
+
+    document.body.appendChild(uiEl);
   } else {
     console.log('no 3D model found');
   }
