@@ -1,6 +1,6 @@
 #arext-ui {
   box-sizing: border-box;
-  position: absolute;
+  position: fixed;
   right: 5px;
   top: 5px;
   padding: 5px;
