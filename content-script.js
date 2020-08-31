@@ -35,10 +35,17 @@ function load() {
   let modelUrl = get3DModelFromPage();
   if (modelUrl) {
     console.log(`3D model found (schema): ${modelUrl}`);
-  } else {
+  }
+  if (!modelUrl) {
     modelUrl = getModelFromModelViewer();
     if (modelUrl) {
       console.log(`3D model found (model-viewer): ${modelUrl}`);
+    }
+  }
+  if (!modelUrl) {
+    modelUrl = getModelFromGoogleSearch();
+    if (modelUrl) {
+      console.log(`3D model found (google-search): ${modelUrl}`);
     }
   }
 
@@ -179,6 +186,50 @@ function getModelFromModelViewer() {
   let src = mv.getAttribute('src');
 
   return src;
+}
+
+/*
+Google Search page results may contain models:
+
+<g-link>
+  <a data-url="${url}">
+    <span>View in 3D</span>
+  </a>
+</g-link>
+
+with url like:
+intent://arvr.google.com/scene-viewer/1.2?file=https://storage.googleapis.com/searchar/306423cf48b3c9e8/162f1f9bb74fbaca/gltf/galaxy-note20-ultra-mystic-bronze.glb&title=Samsung+Galaxy+Note20+Ultra+5G&referrer=google.com:result&link=https://www.samsung.com/us/smartphones/galaxy-note20-5g/#Intent;package=com.google.android.googlequicksearchbox;scheme=https;S.browser_fallback_url=https://arvr.google.com/scene-viewer?file=https://storage.googleapis.com/searchar/306423cf48b3c9e8/162f1f9bb74fbaca/gltf/galaxy-note20-ultra-mystic-bronze.glb&title=Samsung+Galaxy+Note20+Ultra+5G&referrer=google.com:result&link=https://www.samsung.com/us/smartphones/galaxy-note20-5g/;end;
+*/
+function getModelFromGoogleSearch() {
+  let gLinks = document.querySelectorAll('g-link');
+
+  for (let i = 0; i < gLinks.length; i++) {
+    let gLink = gLinks[i];
+    let spans = gLink.querySelectorAll('span');
+    for (let k = 0; k < spans.length; k++) {
+      let span = spans[k];
+
+      const label = 'View in 3D';
+      if (span.textContent === label) {
+        console.log(`'label' model found`);
+        let link = gLink.querySelector('a');
+        let dataUrl = link.getAttribute('data-url');
+        console.log(dataUrl);
+
+        let modelUrl = extractIntentUrl(dataUrl);
+        return modelUrl;
+      }
+    }
+  }
+
+  return;
+}
+
+function extractIntentUrl(url) {
+  let paramsString = url.split('?')[1];
+  let params = new URLSearchParams(paramsString);
+  let modelFile = params.get('file');
+  return modelFile;
 }
 
 
