@@ -5,7 +5,8 @@ const VERSION = 0.1;
 let pageTitle = document.title;
 console.log(`AR Extension: v${VERSION} ('${pageTitle}')`);
 
-const VIEW_BASE_URL = 'https://m-blix.github.io/share-poc/?url=';
+const VIEWER_BASE_URL = 'https://m-blix.github.io/share-poc/?url=';
+let useViewer = true;
 
 const CORRECT_LEVEL = QRCode.CorrectLevel.L;
 let qrCode;
@@ -32,6 +33,8 @@ function setupUI() {
 function load() {
   setupUI();
 
+  let viewerUrl;
+
   let modelUrl = get3DModelFromPage();
   if (modelUrl) {
     console.log(`3D model found (schema): ${modelUrl}`);
@@ -43,7 +46,13 @@ function load() {
     }
   }
   if (!modelUrl) {
-    modelUrl = getModelFromGoogleSearch();
+    let data = getModelFromGoogleSearch();
+    console.log(data);
+    if (data) {
+      useViewer = false;
+      modelUrl = data.file;
+      viewerUrl = data.viewerUrl;
+    }
     if (modelUrl) {
       console.log(`3D model found (google-search): ${modelUrl}`);
     }
@@ -52,10 +61,12 @@ function load() {
   if (modelUrl) {
     console.log('generating QR Code, adding to page');
 
-    let url = VIEW_BASE_URL+modelUrl;
+    if (useViewer) {
+      viewerUrl = VIEWER_BASE_URL+modelUrl;
+    }
 
-    generateQRCode(url);
-    qrEl.dataset.url = url;
+    generateQRCode(viewerUrl);
+    qrEl.dataset.url = viewerUrl;
 
     document.body.appendChild(uiEl);
   } else {
@@ -214,7 +225,7 @@ function getModelFromGoogleSearch() {
         console.log(dataUrl);
 
         let intentInfo = extractIntentInfo(dataUrl);
-        return intentInfo.file;
+        return intentInfo;
       }
     }
   }
@@ -245,9 +256,12 @@ function extractIntentInfo(url) {
   const INTENT_END = ';end;';
   const INTENT_START = '#Intent';
 
+  let info = {};
+
   let fallbackUrl = paramsString.substring(
     paramsString.indexOf(FB_URL_PARAM)+FB_URL_PARAM.length+1);
   fallbackUrl = fallbackUrl.replace(INTENT_END, '');
+  info['viewerUrl'] = fallbackUrl;
 
   console.log('fallbackUrl', fallbackUrl);
 
@@ -255,7 +269,6 @@ function extractIntentInfo(url) {
 
   let parts = paramsString.split('&');
 
-  let info = {};
   for (let i = 0; i < parts.length; i++) {
     let param = parts[i];
 
