@@ -196,9 +196,6 @@ Google Search page results may contain models:
     <span>View in 3D</span>
   </a>
 </g-link>
-
-with url like:
-intent://arvr.google.com/scene-viewer/1.2?file=https://storage.googleapis.com/searchar/306423cf48b3c9e8/162f1f9bb74fbaca/gltf/galaxy-note20-ultra-mystic-bronze.glb&title=Samsung+Galaxy+Note20+Ultra+5G&referrer=google.com:result&link=https://www.samsung.com/us/smartphones/galaxy-note20-5g/#Intent;package=com.google.android.googlequicksearchbox;scheme=https;S.browser_fallback_url=https://arvr.google.com/scene-viewer?file=https://storage.googleapis.com/searchar/306423cf48b3c9e8/162f1f9bb74fbaca/gltf/galaxy-note20-ultra-mystic-bronze.glb&title=Samsung+Galaxy+Note20+Ultra+5G&referrer=google.com:result&link=https://www.samsung.com/us/smartphones/galaxy-note20-5g/;end;
 */
 function getModelFromGoogleSearch() {
   let gLinks = document.querySelectorAll('g-link');
@@ -209,15 +206,15 @@ function getModelFromGoogleSearch() {
     for (let k = 0; k < spans.length; k++) {
       let span = spans[k];
 
-      const label = 'View in 3D';
-      if (span.textContent === label) {
-        console.log(`'label' model found`);
+      const VIEW_3D_LABEL = 'View in 3D';
+      if (span.textContent === VIEW_3D_LABEL) {
+        console.log(`'${VIEW_3D_LABEL}' model found`);
         let link = gLink.querySelector('a');
         let dataUrl = link.getAttribute('data-url');
         console.log(dataUrl);
 
-        let modelUrl = extractIntentUrl(dataUrl);
-        return modelUrl;
+        let intentInfo = extractIntentInfo(dataUrl);
+        return intentInfo.file;
       }
     }
   }
@@ -225,11 +222,51 @@ function getModelFromGoogleSearch() {
   return;
 }
 
-function extractIntentUrl(url) {
-  let paramsString = url.split('?')[1];
-  let params = new URLSearchParams(paramsString);
-  let modelFile = params.get('file');
-  return modelFile;
+/*
+example:
+intent://arvr.google.com/scene-viewer/1.2
+  ?file=https://storage.googleapis.com/searchar/306423cf48b3c9e8/162f1f9bb74fbaca/gltf/galaxy-note20-ultra-mystic-bronze.glb
+  &title=Samsung+Galaxy+Note20+Ultra+5G
+  &referrer=google.com:result
+  &link=https://www.samsung.com/us/smartphones/galaxy-note20-5g/
+    #Intent;
+      package=com.google.android.googlequicksearchbox;
+      scheme=https;
+      S.browser_fallback_url=https://arvr.google.com/scene-viewer
+        ?file=https://storage.googleapis.com/searchar/306423cf48b3c9e8/162f1f9bb74fbaca/gltf/galaxy-note20-ultra-mystic-bronze.glb
+        &title=Samsung+Galaxy+Note20+Ultra+5G
+        &referrer=google.com:result
+        &link=https://www.samsung.com/us/smartphones/galaxy-note20-5g/;end;
+*/
+function extractIntentInfo(url) {
+  let paramsString = url.substring(url.indexOf('?')+1);
+
+  const FB_URL_PARAM = 'S.browser_fallback_url';
+  const INTENT_END = ';end;';
+  const INTENT_START = '#Intent';
+
+  let fallbackUrl = paramsString.substring(
+    paramsString.indexOf(FB_URL_PARAM)+FB_URL_PARAM.length+1);
+  fallbackUrl = fallbackUrl.replace(INTENT_END, '');
+
+  console.log('fallbackUrl', fallbackUrl);
+
+  paramsString = paramsString.split(INTENT_START)[0];
+
+  let parts = paramsString.split('&');
+
+  let info = {};
+  for (let i = 0; i < parts.length; i++) {
+    let param = parts[i];
+
+    let key = param.substring(0, param.indexOf('='));
+    let value = param.substring(param.indexOf('=')+1);
+
+    console.log(key, value);
+    info[key] = value;
+  }
+
+  return info;
 }
 
 
