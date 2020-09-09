@@ -5,7 +5,8 @@ const VERSION = 0.1;
 let pageTitle = document.title;
 console.log(`AR Extension: v${VERSION} ('${pageTitle}')`);
 
-const VIEWER_BASE_URL = 'https://m-blix.github.io/share-poc/?url=';
+const VIEWER_DOMAIN = 'https://m-blix.github.io';
+const VIEWER_BASE_URL = VIEWER_DOMAIN+'/share-poc/?url=';
 let useViewer = true;
 
 const CORRECT_LEVEL = QRCode.CorrectLevel.L;
@@ -13,6 +14,11 @@ let qrCode;
 
 let uiEl, qrEl, msgEl;
 
+function setup() {
+  chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+    console.log(response.farewell);
+  });
+}
 
 function setupUI() {
   uiEl = document.createElement('div');
@@ -31,6 +37,7 @@ function setupUI() {
 }
 
 function load() {
+  setup();
   setupUI();
 
   let viewerUrl;
