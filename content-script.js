@@ -220,11 +220,23 @@ function getModelFromGoogleSearch() {
 
   for (let i = 0; i < gLinks.length; i++) {
     let gLink = gLinks[i];
-    let spans = gLink.querySelectorAll('span');
+    console.log(gLink);
+
+    let link = gLink.querySelector('a');
+    if (link) {
+      let dataUrl = link.getAttribute('data-url');
+      if (dataUrl && dataUrl.startsWith('intent://arvr')) {
+        let intentInfo = extractIntentInfo(dataUrl);
+        return intentInfo;
+      }
+    }
+
+    /*let spans = gLink.querySelectorAll('span');
     for (let k = 0; k < spans.length; k++) {
       let span = spans[k];
 
       const VIEW_3D_LABEL = 'View in 3D';
+      console.log(span.textContent);
       if (span.textContent === VIEW_3D_LABEL) {
         console.log(`'${VIEW_3D_LABEL}' model found`);
         let link = gLink.querySelector('a');
@@ -234,7 +246,7 @@ function getModelFromGoogleSearch() {
         let intentInfo = extractIntentInfo(dataUrl);
         return intentInfo;
       }
-    }
+    }*/
   }
 
   return;
