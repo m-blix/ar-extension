@@ -7,7 +7,7 @@
      "activeTab",
      "webRequest",
      "webRequestBlocking",
-     "https://m-blix.github.io/*"
+     "<all_urls>"
    ],
   "background": {
     "scripts": ["background.js"],

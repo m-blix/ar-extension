@@ -1,4 +1,3 @@
-/* content script */
 'use strict';
 
 const VERSION = 0.1;
