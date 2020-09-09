@@ -30,7 +30,7 @@ function setupUI() {
   msgEl.textContent = 'Scan to View Model';
   uiEl.appendChild(msgEl);
 
-  qrEl.addEventListener('dblclick', function(ev){
+  qrEl.addEventListener('click', function(ev){
     window.open(qrEl.dataset.url, '_blank');
   });
 }
