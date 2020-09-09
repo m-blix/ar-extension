@@ -49,7 +49,7 @@ function load() {
     let data = getModelFromGoogleSearch();
     console.log(data);
     if (data) {
-      useViewer = false;
+      //useViewer = false;
       modelUrl = data.file;
       viewerUrl = data.viewerUrl;
     }
