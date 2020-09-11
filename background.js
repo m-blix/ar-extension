@@ -10,7 +10,6 @@ chrome.runtime.onMessage.addListener(
     }
   });
 
-
 const prefs = {
   'enabled': true,
   'overwrite-origin': true,
@@ -24,6 +23,11 @@ const prefs = {
 
 const cors = {};
 cors.onHeadersReceived = ({responseHeaders}) => {
+
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {message: 'request'});
+  });
+
   if (prefs['overwrite-origin'] === true) {
     const o = responseHeaders.find(({name}) => name.toLowerCase() === 'access-control-allow-origin');
     if (o) {
@@ -99,7 +103,7 @@ cors.install = () => {
     extra.push('extraHeaders');
   }
   chrome.webRequest.onHeadersReceived.addListener(cors.onHeadersReceived, {
-    urls: ['<all_urls>']
+    urls: ['http://*/*','https://*/*']
   }, extra);
 };
 cors.remove = () => {

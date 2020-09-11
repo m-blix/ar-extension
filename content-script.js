@@ -19,7 +19,7 @@ function setup() {
   });
 
   chrome.runtime.onMessage.addListener(function backgroundListener(request, sender, sendResponse) {
-    console.log("background.js says: " + request);
+    console.log("background.js: ", request);
   });
 }
 
