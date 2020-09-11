@@ -26,9 +26,14 @@ cors.onHeadersReceived = (details) => {
 
   let responseHeaders = details.responseHeaders;
 
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {message: 'request: ' + details.url});
-  });
+  let url = details.url;
+  if (url.includes('.glb') || url.includes('.gltf')) {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {message: 'modify headers for: ' + url});
+    });
+  } else {
+    return { responseHeaders };
+  }
 
   if (prefs['overwrite-origin'] === true) {
     const o = responseHeaders.find(({name}) => name.toLowerCase() === 'access-control-allow-origin');
@@ -96,7 +101,8 @@ cors.onHeadersReceived = (details) => {
       responseHeaders.splice(i, 1);
     }
   }
-  return {responseHeaders};
+
+  return { responseHeaders };
 };
 cors.install = () => {
   cors.remove();
