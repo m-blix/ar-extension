@@ -17,6 +17,10 @@ function setup() {
   chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
     console.log(response.farewell);
   });
+
+  chrome.runtime.onMessage.addListener(function backgroundListener(request, sender, sendResponse) {
+    console.log("background.js says: " + request);
+  });
 }
 
 function setupUI() {
