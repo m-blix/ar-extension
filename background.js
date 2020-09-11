@@ -22,10 +22,12 @@ const prefs = {
 };
 
 const cors = {};
-cors.onHeadersReceived = ({responseHeaders}) => {
+cors.onHeadersReceived = (details) => {
+
+  let responseHeaders = details.responseHeaders;
 
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {message: 'request'});
+    chrome.tabs.sendMessage(tabs[0].id, {message: 'request: ' + details.url});
   });
 
   if (prefs['overwrite-origin'] === true) {
