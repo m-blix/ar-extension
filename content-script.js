@@ -55,7 +55,9 @@ function load() {
       console.log(`3D model found (model-viewer): ${modelUrl}`);
     }
   }
-  if (!modelUrl) {
+  const GOOGLE_HOST = 'www.google.com';
+  if (!modelUrl && location.host === GOOGLE_HOST) {
+    console.log(`detect on ${GOOGLE_HOST}`);
     let data = getModelFromGoogleSearch();
     console.log(data);
     if (data) {
@@ -306,7 +308,7 @@ function extractIntentInfo(url) {
     let key = param.substring(0, param.indexOf('='));
     let value = param.substring(param.indexOf('=')+1);
 
-    console.log(key, value);
+    //console.log(key, value);
     info[key] = value;
   }
 
