@@ -67,6 +67,15 @@ function load() {
       console.log(`3D model found (google-search): ${modelUrl}`);
     }
   }
+  const GOOGLE_AC_HOST = 'artsandculture.google.com';
+  if (!modelUrl && location.host === GOOGLE_AC_HOST) {
+    console.log(`detect on ${GOOGLE_AC_HOST}`);
+    modelUrl = getModelFromGoogleArtsAndCulture();
+    if (modelUrl) {
+      console.log(`3D model found (google arts & culture): ${modelUrl}`);
+    }
+  }
+
 
   if (modelUrl) {
     console.log('generating QR Code, adding to page');
@@ -304,6 +313,20 @@ function extractIntentInfo(url) {
   return info;
 }
 
+/*
+https://artsandculture.google.com/project/ar
+*/
+function getModelFromGoogleArtsAndCulture() {
+  const GOOGLE_AC_HOST = 'artsandculture.google.com';
+
+  let el = document.querySelector('div[data-model-url]');
+  if (el) {
+    let url = el.getAttribute('data-model-url');
+    return url;
+  }
+
+  return;
+}
 
 function generateQRCode(url, size = 128) {
   if (qrCode) {
