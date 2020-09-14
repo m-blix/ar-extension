@@ -78,6 +78,14 @@ function load() {
     }
   }
 
+  const GOOGLE_POLY_HOST = 'poly.google.com';
+  if (!modelUrl && location.host === GOOGLE_POLY_HOST) {
+    console.log(`detect on ${GOOGLE_POLY_HOST}`);
+    modelUrl = getModelFromGooglePoly();
+    if (modelUrl) {
+      console.log(`3D model found (google poly): ${modelUrl}`);
+    }
+  }
 
   if (modelUrl) {
     console.log('generating QR Code, adding to page');
@@ -317,6 +325,8 @@ function extractIntentInfo(url) {
 
 /*
 https://artsandculture.google.com/project/ar
+
+<div data-model-url="model.glb">
 */
 function getModelFromGoogleArtsAndCulture() {
   const GOOGLE_AC_HOST = 'artsandculture.google.com';
@@ -329,6 +339,24 @@ function getModelFromGoogleArtsAndCulture() {
 
   return;
 }
+
+/*
+<meta
+  property="og:asset"
+  content="https://poly.googleusercontent.com/downloads/model.gltf"/>
+*/
+function getModelFromGooglePoly() {
+  const GOOGLE_POLY_HOST = 'poly.google.com';
+
+  let metaEl = document.querySelector('meta[property="og:asset"]');
+  if (metaEl) {
+    let content = metaEl.getAttribute('content');
+    return content;
+  }
+
+  return;
+}
+
 
 function generateQRCode(url, size = 128) {
   if (qrCode) {
