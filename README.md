@@ -8,6 +8,7 @@ Currently supports finding models on:
 * Google Poly
 * Google Arts and Culture
 * GitHub
+* GitLab
 * any site with model-viewer
 * any site with schema.org 3DModel embedded
 

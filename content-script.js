@@ -88,9 +88,17 @@ function load() {
   const GITHUB_HOST = 'github.com';
   if (!modelUrl && location.host === GITHUB_HOST) {
     console.log(`detect on ${GITHUB_HOST}`);
-    modelUrl = getModelFromGithub();
+    modelUrl = getModelFromGitHub();
     if (modelUrl) {
       console.log(`3D model found (github): ${modelUrl}`);
+    }
+  }
+  const GITLAB_HOST = 'gitlab.com';
+  if (!modelUrl && location.host === GITLAB_HOST) {
+    console.log(`detect on ${GITLAB_HOST}`);
+    modelUrl = getModelFromGitLab();
+    if (modelUrl) {
+      console.log(`3D model found (gitlab): ${modelUrl}`);
     }
   }
 
@@ -362,8 +370,21 @@ function getModelFromGooglePoly() {
 GLB supported
 <a href="/path/model.glb" id="raw-url" role="button" class="btn">Download</a>
 */
-function getModelFromGithub() {
+function getModelFromGitHub() {
   let rawEl = document.querySelector('#raw-url');
+  if (rawEl) {
+    let url = rawEl.href;
+    if (url.includes('.glb')) {
+      return url;
+    }
+  }
+}
+
+/*
+<a aria-label="Download" download="resource/model.glb" href="path/model.glb">
+*/
+function getModelFromGitLab() {
+  let rawEl = document.querySelector('a[aria-label="Download"]');
   if (rawEl) {
     let url = rawEl.href;
     if (url.includes('.glb')) {
