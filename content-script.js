@@ -77,13 +77,20 @@ function load() {
       console.log(`3D model found (google arts & culture): ${modelUrl}`);
     }
   }
-
   const GOOGLE_POLY_HOST = 'poly.google.com';
   if (!modelUrl && location.host === GOOGLE_POLY_HOST) {
     console.log(`detect on ${GOOGLE_POLY_HOST}`);
     modelUrl = getModelFromGooglePoly();
     if (modelUrl) {
       console.log(`3D model found (google poly): ${modelUrl}`);
+    }
+  }
+  const GITHUB_HOST = 'github.com';
+  if (!modelUrl && location.host === GITHUB_HOST) {
+    console.log(`detect on ${GITHUB_HOST}`);
+    modelUrl = getModelFromGithub();
+    if (modelUrl) {
+      console.log(`3D model found (github): ${modelUrl}`);
     }
   }
 
@@ -270,8 +277,6 @@ function getModelFromGoogleSearch() {
       }
     }*/
   }
-
-  return;
 }
 
 /*
@@ -336,8 +341,6 @@ function getModelFromGoogleArtsAndCulture() {
     let url = el.getAttribute('data-model-url');
     return url;
   }
-
-  return;
 }
 
 /*
@@ -353,8 +356,20 @@ function getModelFromGooglePoly() {
     let content = metaEl.getAttribute('content');
     return content;
   }
+}
 
-  return;
+/*
+GLB supported
+<a href="/path/model.glb" id="raw-url" role="button" class="btn">Download</a>
+*/
+function getModelFromGithub() {
+  let rawEl = document.querySelector('#raw-url');
+  if (rawEl) {
+    let url = rawEl.href;
+    if (url.includes('.glb')) {
+      return url;
+    }
+  }
 }
 
 
