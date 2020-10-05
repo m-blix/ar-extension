@@ -18,7 +18,7 @@
      "matches": ["<all_urls>"],
      "run_at": "document_idle",
      "css": ["style.css"],
-     "js": ["qrcode.min.js","content-script.js"]
+     "js": ["qrcode.min.js","model-detectors.js","content-script.js"]
    }
  ]
 }
