@@ -4,19 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AR Extension - model-viewer Test Page</title>
+<link rel="stylesheet" href="common.css">
 <style>
-* {
-  box-sizing: border-box;
-}
-html, body {
-  font-family: sans-serif;
-}
-
-body {
-  margin: 0;
-  padding: 30px;
-}
-
 model-viewer {
   border: 1px solid #999;
   width: 500px;
@@ -37,13 +26,10 @@ model-viewer {
 
 <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" poster="https://modelviewer.dev/assets/poster-astronaut.png" ar camera-controls></model-viewer>
 
-<br>
-<input type="color" id="head" name="head" value="#e66465">
-
 <script>
 'use strict';
 
-console.log('MKMK: model-viewer test page');
+console.log('model-viewer test page');
 </script>
 
 </body>

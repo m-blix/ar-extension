@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+html, body {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 30px;
+}
+
+h1 {
+  margin: 0 auto;
+}
