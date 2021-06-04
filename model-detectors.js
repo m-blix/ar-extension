@@ -254,7 +254,7 @@ function getModelFromGitHub() {
   let rawEl = document.querySelector('#raw-url');
   if (rawEl) {
     let url = rawEl.href;
-    if (url.includes('.glb')) {
+    if (url.includes('.glb') || url.includes('.gltf')) {
       return url;
     }
   }
@@ -267,7 +267,7 @@ function getModelFromGitLab() {
   let rawEl = document.querySelector('a[aria-label="Download"]');
   if (rawEl) {
     let url = rawEl.href;
-    if (url.includes('.glb')) {
+    if (url.includes('.glb') || url.includes('.gltf')) {
       return url;
     }
   }
