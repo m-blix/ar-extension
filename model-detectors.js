@@ -232,21 +232,6 @@ function getModelFromGoogleArtsAndCulture() {
 }
 
 /*
-<meta
-  property="og:asset"
-  content="https://poly.googleusercontent.com/downloads/model.gltf"/>
-*/
-function getModelFromGooglePoly() {
-  const GOOGLE_POLY_HOST = 'poly.google.com';
-
-  let metaEl = document.querySelector('meta[property="og:asset"]');
-  if (metaEl) {
-    let content = metaEl.getAttribute('content');
-    return content;
-  }
-}
-
-/*
 GLB supported
 <a href="/path/model.glb" id="raw-url" role="button" class="btn">Download</a>
 */

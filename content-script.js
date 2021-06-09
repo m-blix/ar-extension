@@ -77,14 +77,6 @@ function load() {
       console.log(`3D model found (google arts & culture): ${modelUrl}`);
     }
   }
-  const GOOGLE_POLY_HOST = 'poly.google.com';
-  if (!modelUrl && location.host === GOOGLE_POLY_HOST) {
-    console.log(`detect on ${GOOGLE_POLY_HOST}`);
-    modelUrl = getModelFromGooglePoly();
-    if (modelUrl) {
-      console.log(`3D model found (google poly): ${modelUrl}`);
-    }
-  }
   const GITHUB_HOST = 'github.com';
   if (!modelUrl && location.host === GITHUB_HOST) {
     console.log(`detect on ${GITHUB_HOST}`);
