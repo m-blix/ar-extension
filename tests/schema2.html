@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AR Extension - Schema Test Page</title>
+<link rel="stylesheet" href="common.css">
+<style>
+</style>
+</head>
+<body>
+
+<h1>AR Extension - Schema Test Page</h1>
+
+<p>Page includes an embedded 3DModel Schema definition</p>
+
+<p>Should trigger extension to show AR button to view model</p>
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org/",
+  "@type" : "3DModel",
+  "image" : "https://modelviewer.dev/assets/poster-astronaut.png",
+  "name" : "Astronaut",
+  "encoding" : [
+    {
+      "@type" : "MediaObject",
+      "contentUrl" : "https://storage.googleapis.com/search-ar-edu/anatomy/muscleSystem/muscleSystem.glb",
+      "encodingFormat" : "model/gltf-binary"
+    }
+  ]
+}
+</script>
+
+<script>
+console.log('schema test');
+</script>
+</body>
+</html>
